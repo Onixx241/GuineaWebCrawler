@@ -1,0 +1,14 @@
+C:\Users\onixt\source\repos\Guinea\bin\Debug\net8.0\Guinea.exe
+C:\Users\onixt\source\repos\Guinea\bin\Debug\net8.0\Guinea.deps.json
+C:\Users\onixt\source\repos\Guinea\bin\Debug\net8.0\Guinea.runtimeconfig.json
+C:\Users\onixt\source\repos\Guinea\bin\Debug\net8.0\Guinea.dll
+C:\Users\onixt\source\repos\Guinea\bin\Debug\net8.0\Guinea.pdb
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\Guinea.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\Guinea.AssemblyInfoInputs.cache
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\Guinea.AssemblyInfo.cs
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\Guinea.csproj.CoreCompileInputs.cache
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\Guinea.dll
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\refint\Guinea.dll
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\Guinea.pdb
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\Guinea.genruntimeconfig.cache
+C:\Users\onixt\source\repos\Guinea\obj\Debug\net8.0\ref\Guinea.dll
