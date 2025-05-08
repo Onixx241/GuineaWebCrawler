@@ -8,6 +8,8 @@ public class Crawler
 
     public List<string> FoundLinks { get; set; }
 
+    public Filter Fil;
+
     public Crawler(string url)
     {
         this.Url = url;
@@ -28,9 +30,17 @@ public class Crawler
 
         this.SaveHTMLToFile();
 
+        //remove all this later on and move it to another function -underneath this
+
         this.ExtractLinks();
 
         this.RemoveDuplicates();
+
+        this.Fil = new Filter(this.FoundLinks, this.Url);
+
+        this.Fil.AbsoluteLinks();
+
+        this.Fil.BasicFilter();
 
         this.PrintLinks();
 
