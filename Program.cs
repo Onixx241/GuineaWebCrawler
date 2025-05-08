@@ -45,7 +45,8 @@ public class Crawler
     }
 
 
-    //todo
+    public void RemoveDuplicates(){}
+
     public void ExtractLinks() 
     {
         Regex FindLinks = new Regex("href=[\"'](?<url>.*?)[\"']", RegexOptions.IgnoreCase);
