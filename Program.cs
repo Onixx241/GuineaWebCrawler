@@ -32,6 +32,8 @@ public class Crawler
 
         this.ExtractLinks();
 
+        this.RemoveDuplicates();
+
         this.PrintLinks();
 
     }
@@ -45,7 +47,24 @@ public class Crawler
     }
 
 
-    public void RemoveDuplicates(){}
+    public void RemoveDuplicates()
+    {
+        List<string> Templinks = new List<string>();
+
+        HashSet<string> Nodupes = new HashSet<string>();
+
+        foreach (string link in this.FoundLinks) 
+        {
+            Nodupes.Add(link);
+        }
+
+        foreach (string ND in Nodupes) 
+        {
+            Templinks.Add(ND);
+        }
+
+        this.FoundLinks = Templinks;
+    }
 
     public void ExtractLinks() 
     {
