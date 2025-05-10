@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,11 +38,23 @@ public class Filter
 
             index = 0;
         }
+        int remcount = 1;
+        bool oneremoved = false;
 
         //actual removal part
         foreach (int dex in slatedRemoval) 
         {
-            this.Links.RemoveAt(dex);
+            if (oneremoved == false)
+            {
+                this.Links.RemoveAt(dex);
+                oneremoved = true;
+            }
+
+            if(oneremoved == true) 
+            {
+                this.Links.RemoveAt(dex - remcount);
+                remcount++;
+            }
         }
 
     }
@@ -75,5 +88,47 @@ public class Filter
             linkpos = linkpos + 1;
         }
 
+
+    }
+
+    //remove trailing slashes
+    public void Normalize() 
+    {
+        List<string> templinks = new List<string>();
+
+        //populate templinks
+        foreach (string links in this.Links) 
+        {
+            templinks.Add(links);
+        }
+
+        foreach (string link in this.Links) 
+        {
+            if (link.Last() == '/') 
+            {
+                string toreplace = link;
+
+                Console.WriteLine($"Normalizing link: {link}");
+
+                string newlink = link.Remove(link.Length - 1);
+
+                templinks.Remove(link);
+                templinks.Add(newlink);
+
+                Console.WriteLine("Normalized link: " + newlink);
+
+
+            }
+
+        }
+
+        this.Links = templinks;
+    }
+
+    public void RunFilters() 
+    {
+        this.AbsoluteLinks();
+        this.BasicFilter();
+        this.Normalize();
     }
 }

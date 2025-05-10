@@ -38,9 +38,9 @@ public class Crawler
 
         this.Fil = new Filter(this.FoundLinks, this.Url);
 
-        this.Fil.AbsoluteLinks();
+        this.Fil.RunFilters();
 
-        this.Fil.BasicFilter();
+        this.FoundLinks = this.Fil.Links;
 
         this.PrintLinks();
 
@@ -90,7 +90,7 @@ public class Crawler
     {
         foreach (string list in this.FoundLinks)
         {
-            Console.WriteLine(list);
+            Console.WriteLine($"------------------------\n{list}");
         }
     }
 
