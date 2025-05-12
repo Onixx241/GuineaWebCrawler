@@ -15,8 +15,9 @@ public class Crawler
     public string initialPage { get; set; }
     public string CurrentPage { get; set; }
 
-    public List<List<string>> Sublinks { get; set; }
+    public List<string> Sublinks { get; set; }
     public Queue<string> CrawlQueue { get; set; }
+    public HashSet<string> VisitedLinks { get; set; }
 
     public Filter Fil;
 
@@ -25,6 +26,7 @@ public class Crawler
         this.Url = url;
         this.CurrentPage = "";
         this.CrawlQueue = new Queue<string>();
+        this.VisitedLinks = new HashSet<string>();
 
     }
 
@@ -45,14 +47,11 @@ public class Crawler
         PageSaver.SaveHTMLToFile(this.CurrentPage);
 
         //remove everything under this later on and move it.
+        HashSet<string> LinkList = ExtractLinks(this.CurrentPage);
 
-        this.Fil = new Filter(ExtractLinks(this.CurrentPage), this.Url);
+        this.Fil = new Filter(LinkList, this.Url);
 
         this.Fil.RunFilters();
-
-        //continue here make it re
-
-        this.PrintLinks();
 
         return this.Fil.Links;
 
@@ -69,23 +68,32 @@ public class Crawler
     public async Task crawl() 
     {
         //populate queue
-        //queue all
         //visit sub links 
         //return sub links from first link 
         //put sublinks somewhere
         //dequeue visited links and go to next link
-        foreach (string links in //????) 
+
+        List<string> Firstlinks = await DownloadPage(this.Url);
+
+        foreach (string link in Firstlinks) 
         {
-            this.CrawlQueue.Enqueue(links);
+            CrawlQueue.Enqueue(link);
         }
 
-        foreach (string nextlink in CrawlQueue) 
+
+        while (this.CrawlQueue.Count > 0) 
         {
-            await DownloadPage(nextlink);
+            string currenturl = CrawlQueue.Dequeue();
 
-
-
-            this.CrawlQueue.Dequeue();
+            if (this.VisitedLinks.Contains(currenturl) != true) 
+            {
+                this.VisitedLinks.Add(currenturl);
+                //Console.WriteLine("Visited Links: " + currenturl);
+            }
+            else 
+            {
+                await DownloadPage(currenturl);
+            }
         }
     }
 
@@ -106,9 +114,9 @@ public class Crawler
 
     }
 
-    public void PrintLinks()
+    public void PrintLinks(HashSet<string> linklist)
     {
-        foreach (string list in //add new way of getting link here since foundlinks is gone)
+        foreach(string list in linklist)
         {
             Console.WriteLine($"------------------------\n{list}");
         }
@@ -116,9 +124,6 @@ public class Crawler
 
     public async Task StartCrawler()
     {
-        //first one
-        await DownloadPage(this.Url);
-
         //crawl
         await crawl();
     }

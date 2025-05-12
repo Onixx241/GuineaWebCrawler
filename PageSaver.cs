@@ -12,7 +12,7 @@ public static class PageSaver
     public static void SaveHTMLToFile(string page)
     {
 
-        using (StreamWriter Sw = new StreamWriter($"./Output.html {PageNum}"))
+        using (StreamWriter Sw = new StreamWriter($"./pagesaves/Output{PageNum}.html"))
         {
             Sw.Write(page);
         }

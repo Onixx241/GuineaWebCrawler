@@ -19,6 +19,7 @@ public class Filter
         foreach (string link in links) 
         {
             this.Links.Add(link);
+            
         }
 
         this.BaseAddress = baseA;
@@ -68,6 +69,8 @@ public class Filter
 
     public void AbsoluteLinks()
     {
+        //continue here.
+        Console.WriteLine("Absoluting links working.");
         int linkpos = 0;
 
         List<string> templinks = new List<string>();
