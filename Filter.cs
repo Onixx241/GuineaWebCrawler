@@ -12,9 +12,15 @@ public class Filter
     public List<string> Links { get; set; }
 
 
-    public Filter(List<string> links, string baseA) 
+    public Filter(HashSet<string> links, string baseA) 
     {
-        this.Links = links;
+        this.Links = new List<string>();
+
+        foreach (string link in links) 
+        {
+            this.Links.Add(link);
+        }
+
         this.BaseAddress = baseA;
     }
 
@@ -78,11 +84,15 @@ public class Filter
         {
             string currentlink = link;
 
-            if (link.ToCharArray().First() == '/') 
+            if (link.ToCharArray().First() == '/')
             {
                 Console.WriteLine($"Found link that should be added to baseaddress: {link}");
                 currentlink = this.BaseAddress + link;
-                this.Links[linkpos] = currentlink; 
+                this.Links[linkpos] = currentlink;
+            }
+            else 
+            {
+                break;
             }
 
             linkpos = linkpos + 1;
@@ -118,6 +128,10 @@ public class Filter
                 Console.WriteLine("Normalized link: " + newlink);
 
 
+            }
+            else 
+            {
+                break;
             }
 
         }

@@ -1,12 +1,22 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+using System.Transactions;
 
+//downloadpage -> postdownloadfunc (to view sublinks and store them) -> crawl
+//filter is not dynamic since it only takes foundlinks
+//stuck on how to implement crawl
+//
 public class Crawler
 {
     public string Url { get; set; }
 
+    public string CurrentUrl { get; set; }
+
+    public string initialPage { get; set; }
     public string CurrentPage { get; set; }
 
-    public List<string> FoundLinks { get; set; }
+    public List<List<string>> Sublinks { get; set; }
+    public Queue<string> CrawlQueue { get; set; }
 
     public Filter Fil;
 
@@ -14,81 +24,91 @@ public class Crawler
     {
         this.Url = url;
         this.CurrentPage = "";
-        this.FoundLinks = new List<string>();
+        this.CrawlQueue = new Queue<string>();
+
     }
 
-    public async Task DownloadPage()
+    public async Task<List<string>> DownloadPage(string todownload)
     {
-        Console.WriteLine("Task Running");
+        //break this up in a modular way to crawl
+
+        Console.WriteLine("Crawling Page!");
 
         HttpClient client = new HttpClient();
 
-
-        var response = await client.GetAsync(this.Url);
+        var response = await client.GetAsync(new Uri(todownload));
 
         this.CurrentPage = await response.Content.ReadAsStringAsync();
 
-        this.SaveHTMLToFile();
+        client.Dispose();
 
-        //remove all this later on and move it to another function -underneath this
+        PageSaver.SaveHTMLToFile(this.CurrentPage);
 
-        this.ExtractLinks();
+        //remove everything under this later on and move it.
 
-        this.RemoveDuplicates();
-
-        this.Fil = new Filter(this.FoundLinks, this.Url);
+        this.Fil = new Filter(ExtractLinks(this.CurrentPage), this.Url);
 
         this.Fil.RunFilters();
 
-        this.FoundLinks = this.Fil.Links;
+        //continue here make it re
 
         this.PrintLinks();
 
+        return this.Fil.Links;
+
     }
 
-    public void SaveHTMLToFile()
+    
+
+    public void PostDownload() 
     {
-        using (StreamWriter Sw = new StreamWriter("./Output.html"))
+    }
+
+
+
+    public async Task crawl() 
+    {
+        //populate queue
+        //queue all
+        //visit sub links 
+        //return sub links from first link 
+        //put sublinks somewhere
+        //dequeue visited links and go to next link
+        foreach (string links in //????) 
         {
-            Sw.Write(this.CurrentPage);
+            this.CrawlQueue.Enqueue(links);
+        }
+
+        foreach (string nextlink in CrawlQueue) 
+        {
+            await DownloadPage(nextlink);
+
+
+
+            this.CrawlQueue.Dequeue();
         }
     }
 
-
-    public void RemoveDuplicates()
+    public HashSet<string> ExtractLinks(string page)
     {
-        List<string> Templinks = new List<string>();
+        HashSet<string> ExtractedLinks = new HashSet<string>();
 
-        HashSet<string> Nodupes = new HashSet<string>();
-
-        foreach (string link in this.FoundLinks)
-        {
-            Nodupes.Add(link);
-        }
-
-        foreach (string ND in Nodupes)
-        {
-            Templinks.Add(ND);
-        }
-
-        this.FoundLinks = Templinks;
-    }
-
-    public void ExtractLinks()
-    {
         Regex FindLinks = new Regex("href=[\"'](?<url>.*?)[\"']", RegexOptions.IgnoreCase);
 
-        MatchCollection matches = FindLinks.Matches(this.CurrentPage);
+        MatchCollection matches = FindLinks.Matches(page);
 
         foreach (Match link in matches)
         {
-            this.FoundLinks.Add(link.Groups["url"].Value);
+            ExtractedLinks.Add(link.Groups["url"].Value);
         }
+
+        return ExtractedLinks;
+
     }
 
     public void PrintLinks()
     {
-        foreach (string list in this.FoundLinks)
+        foreach (string list in //add new way of getting link here since foundlinks is gone)
         {
             Console.WriteLine($"------------------------\n{list}");
         }
@@ -96,9 +116,11 @@ public class Crawler
 
     public async Task StartCrawler()
     {
-        await DownloadPage();
+        //first one
+        await DownloadPage(this.Url);
 
-        ExtractLinks();
+        //crawl
+        await crawl();
     }
 
 }
