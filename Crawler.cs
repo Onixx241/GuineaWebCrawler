@@ -72,11 +72,6 @@ public class Crawler
 
     public async Task crawl() 
     {
-        //populate queue
-        //visit sub links 
-        //return sub links from first link 
-        //put sublinks somewhere
-        //dequeue visited links and go to next link
 
         List<string> Firstlinks = await DownloadPage(this.Url);
 
@@ -85,7 +80,7 @@ public class Crawler
             CrawlQueue.Enqueue(link);
         }
 
-
+        //while queue count is not 0 
         while (this.CrawlQueue.Count > 0) 
         {
             string currenturl = CrawlQueue.Dequeue();
