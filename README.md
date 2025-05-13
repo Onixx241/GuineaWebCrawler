@@ -27,17 +27,30 @@ This project was created as a **personal learning** journey — to better unders
 
 ## 🔧 Project Status
 
-> GuineaCS is currently in **active development**  
-> and is approaching **Phase 3: Multi-page recursive crawling**
+## ✅ Milestone: Phase 4 Complete
 
-| Phase              | Status     |
-|-------------------|------------|
-| Core Crawler       | ✅ Complete |
-| Link Filtering     | ✅ In Progress |
-| Normalization      | ✅ Complete |
-| Recursive Crawling | 🚧 Coming Soon |
-| Export to File     | 🔜 Planned |
-| CLI Flags          | 🔜 Planned |
+GuineaCS now has:
+- Multi-page crawling using a breadth-first approach
+- Queue-based link exploration
+- Visited link tracking to avoid loops and repeats
+- Basic link filtering (mailto:, `#`, etc.)
+- Automatic saving of every visited page as numbered HTML files
+- Input validation to skip malformed or unsupported links
+
+You can now give it a single starting URL and it will explore an entire site layer by layer.
+
+---
+
+###  Next Milestone: Phase 5 - QOL Updates
+
+| Feature                         | Status       |
+|----------------------------------|--------------|
+| Same-domain restriction          | 🔜 Planned |
+| Output log (all visited URLs)   | 🔜 Planned |
+| CLI flags (`--url`, `--max-pages`, etc.) | 🔜 Planned |
+| Crawl depth or page limit       | Currently working on |
+| Export to `.txt` or `.json`     | 🔜 Planned |
+
 
 ---
 
