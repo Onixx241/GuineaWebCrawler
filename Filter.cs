@@ -87,7 +87,7 @@ public class Filter
         {
             string currentlink = link;
 
-            if (link.ToCharArray().First() == '/')
+            if (!string.IsNullOrEmpty(link) && link.ToCharArray().First() == '/')
             {
                 Console.WriteLine($"Found link that should be added to baseaddress: {link}");
                 currentlink = this.BaseAddress + link;
@@ -95,7 +95,7 @@ public class Filter
             }
             else 
             {
-                break;
+                continue;
             }
 
             linkpos = linkpos + 1;
@@ -117,7 +117,7 @@ public class Filter
 
         foreach (string link in this.Links) 
         {
-            if (link.Last() == '/') 
+            if (!string.IsNullOrEmpty(link) && link.Last() == '/') 
             {
                 string toreplace = link;
 
@@ -134,7 +134,7 @@ public class Filter
             }
             else 
             {
-                break;
+                continue;
             }
 
         }

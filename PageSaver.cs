@@ -11,8 +11,11 @@ public static class PageSaver
 
     public static void SaveHTMLToFile(string page)
     {
+        string dir = "./pagesaves/";
 
-        using (StreamWriter Sw = new StreamWriter($"./pagesaves/Output{PageNum}.html"))
+        Directory.CreateDirectory(dir);
+
+        using (StreamWriter Sw = new StreamWriter($"{dir}Output{PageNum}.html"))
         {
             Sw.Write(page);
         }

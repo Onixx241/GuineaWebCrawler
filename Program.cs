@@ -2,7 +2,7 @@
 {
     public async static Task Main() 
     {
-        Crawler crawl = new Crawler("https://handbook-for-cuny-hunter-cs-students.webnode.page");
+        Crawler crawl = new Crawler("Insert Page Here");
         await crawl.StartCrawler();
     }
 }

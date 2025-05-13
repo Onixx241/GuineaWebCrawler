@@ -15,7 +15,6 @@ public class Crawler
     public string initialPage { get; set; }
     public string CurrentPage { get; set; }
 
-    public List<string> Sublinks { get; set; }
     public Queue<string> CrawlQueue { get; set; }
     public HashSet<string> VisitedLinks { get; set; }
 
@@ -32,7 +31,12 @@ public class Crawler
 
     public async Task<List<string>> DownloadPage(string todownload)
     {
-        //break this up in a modular way to crawl
+        if(string.IsNullOrWhiteSpace(todownload)) 
+            return new List<string>();
+        if (!Uri.IsWellFormedUriString(todownload, UriKind.Absolute)) 
+            return new List<string>();
+        if(!todownload.StartsWith("Http", StringComparison.OrdinalIgnoreCase)) 
+            return new List<string>();
 
         Console.WriteLine("Crawling Page!");
 
@@ -46,12 +50,13 @@ public class Crawler
 
         PageSaver.SaveHTMLToFile(this.CurrentPage);
 
-        //remove everything under this later on and move it.
         HashSet<string> LinkList = ExtractLinks(this.CurrentPage);
 
         this.Fil = new Filter(LinkList, this.Url);
 
         this.Fil.RunFilters();
+
+        this.PrintLinks(LinkList);
 
         return this.Fil.Links;
 
@@ -88,12 +93,17 @@ public class Crawler
             if (this.VisitedLinks.Contains(currenturl) != true) 
             {
                 this.VisitedLinks.Add(currenturl);
-                //Console.WriteLine("Visited Links: " + currenturl);
+                List<string> NewLinks = await DownloadPage(currenturl);
+                foreach (string link in NewLinks) 
+                {
+                    if (this.VisitedLinks.Contains(link) != true)
+                    {
+                        this.CrawlQueue.Enqueue(link);
+                        Console.WriteLine("Visited Links: " + link);
+                    }
+                }
             }
-            else 
-            {
-                await DownloadPage(currenturl);
-            }
+            
         }
     }
 
