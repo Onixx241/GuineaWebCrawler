@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public static class PageSaver 
 {
-    public static int PageNum = 0;
+    public static int PageNum = 1;
 
     public static void SaveHTMLToFile(string page)
     {
@@ -22,5 +22,7 @@ public static class PageSaver
 
         PageNum++;
     }
+
+    public static void ClearFolder() { }
 
 }

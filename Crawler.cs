@@ -15,18 +15,20 @@ public class Crawler
     public string initialPage { get; set; }
     public string CurrentPage { get; set; }
 
+    public int CrawlLimit { get; set; }
+
     public Queue<string> CrawlQueue { get; set; }
     public HashSet<string> VisitedLinks { get; set; }
 
     public Filter Fil;
 
-    public Crawler(string url)
+    public Crawler(string url, int limit)
     {
         this.Url = url;
         this.CurrentPage = "";
+        this.CrawlLimit = limit;
         this.CrawlQueue = new Queue<string>();
         this.VisitedLinks = new HashSet<string>();
-
     }
 
     public async Task<List<string>> DownloadPage(string todownload)
@@ -56,7 +58,7 @@ public class Crawler
 
         this.Fil.RunFilters();
 
-        this.PrintLinks(LinkList);
+        //this.PrintLinks(LinkList);
 
         return this.Fil.Links;
 
@@ -72,8 +74,9 @@ public class Crawler
 
     public async Task crawl() 
     {
-
+        //implement crawl limit.
         List<string> Firstlinks = await DownloadPage(this.Url);
+        int crawlcounter = 0;
 
         foreach (string link in Firstlinks) 
         {
@@ -83,21 +86,39 @@ public class Crawler
         //while queue count is not 0 
         while (this.CrawlQueue.Count > 0) 
         {
+            //pop out url from front of queue and check if its in visited links.
             string currenturl = CrawlQueue.Dequeue();
 
             if (this.VisitedLinks.Contains(currenturl) != true) 
             {
+                // link in front of queue -> add to visited links AND run downloadpage and get new links.
+                //possible issue(not really an issue): absoluting links
                 this.VisitedLinks.Add(currenturl);
                 List<string> NewLinks = await DownloadPage(currenturl);
+
+
+                crawlcounter++;
+                foreach (string link in this.VisitedLinks) 
+                {
+                    Console.WriteLine($"Visited Link: {link}");
+                }
+                //break between downloading last page and new link enqueueing if reached limit.
+                if (crawlcounter == this.CrawlLimit)
+                {
+                    break;
+                }
+                //
+
                 foreach (string link in NewLinks) 
                 {
                     if (this.VisitedLinks.Contains(link) != true)
                     {
                         this.CrawlQueue.Enqueue(link);
-                        Console.WriteLine("Visited Links: " + link);
                     }
                 }
             }
+            
+
             
         }
     }

@@ -37,7 +37,7 @@ public class Filter
         {
             if (toremove.StartsWith("#") || toremove.StartsWith("mailto:")) 
             {
-                Console.WriteLine($"--------------------\nfor removal : {toremove}\n-------------------------");
+                //Console.WriteLine($"--------------------\nfor removal : {toremove}\n-------------------------");
 
                 index = this.Links.IndexOf(toremove);
                 slatedRemoval.Add(index);
@@ -69,8 +69,7 @@ public class Filter
 
     public void AbsoluteLinks()
     {
-        //continue here.
-        Console.WriteLine("Absoluting links working.");
+        //Console.WriteLine("Absoluting links working.");
         int linkpos = 0;
 
         List<string> templinks = new List<string>();
@@ -89,7 +88,7 @@ public class Filter
 
             if (!string.IsNullOrEmpty(link) && link.ToCharArray().First() == '/')
             {
-                Console.WriteLine($"Found link that should be added to baseaddress: {link}");
+                //Console.WriteLine($"Found link that should be added to baseaddress: {link}");
                 currentlink = this.BaseAddress + link;
                 this.Links[linkpos] = currentlink;
             }
@@ -121,14 +120,14 @@ public class Filter
             {
                 string toreplace = link;
 
-                Console.WriteLine($"Normalizing link: {link}");
+                //Console.WriteLine($"Normalizing link: {link}");
 
                 string newlink = link.Remove(link.Length - 1);
 
                 templinks.Remove(link);
                 templinks.Add(newlink);
 
-                Console.WriteLine("Normalized link: " + newlink);
+                //Console.WriteLine("Normalized link: " + newlink);
 
 
             }

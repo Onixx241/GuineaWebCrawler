@@ -13,7 +13,12 @@
     public async static Task Main() 
     {
         ReadUrl();
-        Crawler crawl = new Crawler(url);
+        Crawler crawl = new Crawler(url, 10);
         await crawl.StartCrawler();
     }
+    //Next:
+    //Same Domain Only
+    //Output Summary 
+    //Max Crawl Limit
+    //clear html folder each run
 }
