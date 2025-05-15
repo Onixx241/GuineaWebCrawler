@@ -2,13 +2,10 @@
 using System.Text.RegularExpressions;
 using System.Transactions;
 
-//downloadpage -> postdownloadfunc (to view sublinks and store them) -> crawl
-//filter is not dynamic since it only takes foundlinks
-//stuck on how to implement crawl
-//
 public class Crawler
 {
     public string Url { get; set; }
+    public string Domain { get; set; }
 
     public string CurrentUrl { get; set; }
 
@@ -17,11 +14,12 @@ public class Crawler
 
     public int CrawlLimit { get; set; }
 
-    //implement this next.
     public bool SameDomainMode { get; set; }
 
     public Queue<string> CrawlQueue { get; set; }
     public HashSet<string> VisitedLinks { get; set; }
+
+    public List<string> NewLinks { get; set; }
 
     public Filter Fil;
 
@@ -34,6 +32,7 @@ public class Crawler
 
         this.CrawlQueue = new Queue<string>();
         this.VisitedLinks = new HashSet<string>();
+        this.NewLinks = new List<string>();
     }
 
     public async Task<List<string>> DownloadPage(string todownload)
@@ -67,15 +66,7 @@ public class Crawler
 
     }
 
-    
-
-    public void PostDownload() 
-    {
-    }
-
     //either make same domain crawl method, overloading regular crawl method or add same domain logic to original crawl() with bool in parameters
-    public async Task DomainCrawl() 
-    {}
 
     public async Task crawl() 
     {
@@ -99,9 +90,20 @@ public class Crawler
             {
                 // link in front of queue -> add to visited links AND run downloadpage and get new links.
                 //possible issue(not really an issue): absoluting links
-                this.VisitedLinks.Add(currenturl);
-                List<string> NewLinks = await DownloadPage(currenturl);
-
+                //same domain possible solution: if current url is not in the same domain, do not add it to visited links and do not make new links from it.
+                if (this.SameDomainMode == true)
+                {
+                    if (currenturl.Contains(this.Url))
+                    {
+                        this.VisitedLinks.Add(currenturl);
+                        this.NewLinks = await DownloadPage(currenturl);
+                    }
+                }
+                if (this.SameDomainMode == false) 
+                {
+                    this.VisitedLinks.Add(currenturl);
+                    this.NewLinks = await DownloadPage(currenturl);
+                }
 
                 crawlcounter++;
                 foreach (string link in this.VisitedLinks) 
@@ -115,7 +117,7 @@ public class Crawler
                 }
                 //
 
-                foreach (string link in NewLinks) 
+                foreach (string link in this.NewLinks) 
                 {
                     if (this.VisitedLinks.Contains(link) != true)
                     {

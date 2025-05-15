@@ -18,7 +18,8 @@
     {
         PageSaver.ClearFolder();
 
-        Crawler crawl = new Crawler(ReadUrl(), 10);
+        //url, crawllimit, samedomainmode
+        Crawler crawl = new Crawler(ReadUrl(), 25, true);
         await crawl.StartCrawler();
 
         //write summary
@@ -26,7 +27,8 @@
     }
 
     //Next:
-    //export to json
+    //Obey Robots.txt
+    //multi link input from urlhere.txt
     //export to database
-    //Same Domain Only <-- up now
+    //export to json
 }
