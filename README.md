@@ -45,26 +45,24 @@ You can now give it a single starting URL and it will explore an entire site lay
 
 | Feature                         | Status       |
 |----------------------------------|--------------|
-| Same-domain restriction          | 🔜 Planned |
-| Output log (all visited URLs)   | 🔜 Planned |
+| Same-domain restriction          | 🔜 Working on now |
+| Output log (all visited URLs)   | ✅ Done |
 | CLI flags (`--url`, `--max-pages`, etc.) | 🔜 Planned |
-| Crawl depth or page limit       | Currently working on |
-| Export to `.txt` or `.json`     | 🔜 Planned |
+| Crawl depth or page limit       | ✅ Done |
+| Export to `.txt` or `.json`     | ✅ Done (.Json export on the way) |
 
 
 ---
 
 ## 📚 Why "GuineaCS"?
 
-Because guinea pigs are adorable and curious explorers — just like this crawler.  
+Because guinea pigs are curious explorers — just like this crawler.  
 And it’s written in C# — so I aptly named it , **GuineaCS**.
 
 ---
 
 ## 💡 Goals
 
-This project is more than a crawler — it's a learning lab.  
-It’s a place to:
 - Practice C# fundamentals
 - Explore real-world software design
 - Build a tool worth sharing and growing
