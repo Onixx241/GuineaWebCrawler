@@ -45,7 +45,7 @@ You can now give it a single starting URL and it will explore an entire site lay
 
 | Feature                         | Status       |
 |----------------------------------|--------------|
-| Same-domain restriction          | 🔜 Planned |
+| Same-domain restriction          | 🔜 Working on now |
 | Output log (all visited URLs)   | ✅ Done |
 | CLI flags (`--url`, `--max-pages`, etc.) | 🔜 Planned |
 | Crawl depth or page limit       | ✅ Done |
