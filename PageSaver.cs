@@ -23,6 +23,29 @@ public static class PageSaver
         PageNum++;
     }
 
-    public static void ClearFolder() { }
+    public static void WriteSummary(HashSet<string> VisitedLinks) 
+    {
+        using (StreamWriter Sw = new StreamWriter("Summary.txt")) 
+        {
+
+            Sw.Write("--------------Links Crawled------------\n" +
+                    "----------------------------------------\n");
+            foreach (string link in VisitedLinks) 
+            {
+                Sw.WriteLine($"--------------------\n{link}\n");
+            }
+
+            Sw.WriteLine(File.GetCreationTime("Summary.txt"));
+
+        }
+    }
+
+    public static void ClearFolder() 
+    {
+        foreach(string filee in Directory.GetFiles("./pagesaves/")) 
+        {
+            File.Delete(filee);
+        }
+    }
 
 }

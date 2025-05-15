@@ -17,16 +17,21 @@ public class Crawler
 
     public int CrawlLimit { get; set; }
 
+    //implement this next.
+    public bool SameDomainMode { get; set; }
+
     public Queue<string> CrawlQueue { get; set; }
     public HashSet<string> VisitedLinks { get; set; }
 
     public Filter Fil;
 
-    public Crawler(string url, int limit)
+    public Crawler(string url, int limit, bool domainmode)
     {
         this.Url = url;
         this.CurrentPage = "";
         this.CrawlLimit = limit;
+        this.SameDomainMode = domainmode;
+
         this.CrawlQueue = new Queue<string>();
         this.VisitedLinks = new HashSet<string>();
     }
@@ -58,8 +63,6 @@ public class Crawler
 
         this.Fil.RunFilters();
 
-        //this.PrintLinks(LinkList);
-
         return this.Fil.Links;
 
     }
@@ -70,12 +73,15 @@ public class Crawler
     {
     }
 
-
+    //either make same domain crawl method, overloading regular crawl method or add same domain logic to original crawl() with bool in parameters
+    public async Task DomainCrawl() 
+    {}
 
     public async Task crawl() 
     {
-        //implement crawl limit.
+        //crawl seed url
         List<string> Firstlinks = await DownloadPage(this.Url);
+
         int crawlcounter = 0;
 
         foreach (string link in Firstlinks) 
