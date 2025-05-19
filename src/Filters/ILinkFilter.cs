@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class ToJson 
-{   
+public interface ILinkFilter 
+{
+    bool ShouldAllow(string link);
 }

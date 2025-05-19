@@ -14,14 +14,19 @@ public class Crawler
 
     public int CrawlLimit { get; set; }
 
+    public RobotsTxtManager manager { get; set; }
+
     public bool SameDomainMode { get; set; }
 
     public Queue<string> CrawlQueue { get; set; }
     public HashSet<string> VisitedLinks { get; set; }
 
+
     public List<string> NewLinks { get; set; }
 
     public Filter Fil;
+
+    public List<ILinkFilter> Filters = new List<ILinkFilter>();
 
     public Crawler(string url, int limit, bool domainmode)
     {
@@ -60,7 +65,7 @@ public class Crawler
 
         this.Fil = new Filter(LinkList, this.Url);
 
-        this.Fil.RunFilters();
+        this.Fil.ProcessLinks();
 
         return this.Fil.Links;
 
@@ -68,7 +73,7 @@ public class Crawler
 
     //either make same domain crawl method, overloading regular crawl method or add same domain logic to original crawl() with bool in parameters
 
-    public async Task crawl() 
+    public async Task CrawlAsync() 
     {
         //crawl seed url
         List<string> Firstlinks = await DownloadPage(this.Url);
@@ -77,16 +82,20 @@ public class Crawler
 
         foreach (string link in Firstlinks) 
         {
-            CrawlQueue.Enqueue(link);
+            if (PassesAllFilters(link) == true)
+                this.CrawlQueue.Enqueue(link);
         }
 
         //while queue count is not 0 
         while (this.CrawlQueue.Count > 0) 
         {
+            //crawl delay
+            await Task.Delay(this.manager.CrawlDelay);
+
             //pop out url from front of queue and check if its in visited links.
             string currenturl = CrawlQueue.Dequeue();
 
-            if (this.VisitedLinks.Contains(currenturl) != true) 
+            if (this.VisitedLinks.Contains(currenturl) != true && this.manager.Disallowed.Contains(currenturl) != true) 
             {
                 // link in front of queue -> add to visited links AND run downloadpage and get new links.
                 //possible issue(not really an issue): absoluting links
@@ -119,10 +128,15 @@ public class Crawler
 
                 foreach (string link in this.NewLinks) 
                 {
-                    if (this.VisitedLinks.Contains(link) != true)
-                    {
-                        this.CrawlQueue.Enqueue(link);
-                    }
+
+                    if (this.VisitedLinks.Contains(link))
+                        continue;
+
+
+                    if (PassesAllFilters(link))
+                        CrawlQueue.Enqueue(link);
+                    
+
                 }
             }
             
@@ -156,10 +170,21 @@ public class Crawler
         }
     }
 
+    private bool PassesAllFilters(string link) 
+    {
+        foreach (var filter in this.Filters) 
+        {
+            if (filter.ShouldAllow(link) != true)
+                return false;
+        }
+
+        return true;
+    }
+
     public async Task StartCrawler()
     {
         //crawl
-        await crawl();
+        await CrawlAsync();
     }
 
 }

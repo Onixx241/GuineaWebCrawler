@@ -40,6 +40,14 @@ public static class PageSaver
         }
     }
 
+    public static void WriteSummaryAsJson(HashSet<string> VisitedLinks) 
+    {
+        using (StreamWriter Sw = new StreamWriter("JsonSummary.txt")) 
+        {
+            Sw.Write(ToJson.Serialize(VisitedLinks));
+        }
+    }
+
     public static void ClearFolder() 
     {
         foreach(string filee in Directory.GetFiles("./pagesaves/")) 
