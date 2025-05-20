@@ -17,7 +17,8 @@ public class Program()
 
     public async static Task Main() 
     {
-        PageSaver.ClearFolder();
+        PageSaver newSaver = new PageSaver();
+        newSaver.ClearFolder();
 
         Console.WriteLine("Parsing");
         
@@ -34,10 +35,9 @@ public class Program()
         crawl.Filters.Add(new HashtagFilter());
 
         await crawl.StartCrawler();
-        
+
         //write summary
-        PageSaver.WriteSummary(crawl.VisitedLinks);
-        PageSaver.WriteSummaryAsJson(crawl.VisitedLinks);
+        newSaver.SaveResults(crawl.VisitedLinks);
     }
 
     //Next:
@@ -46,5 +46,5 @@ public class Program()
     //multi link input from urlhere.txt
     //export to database
     //CLI flags -export as txt or json, -same domain crawl mode -url
-    //Obey Robots.txt <-- up now 
+    //add urlhere.txt and URL goes in Urlhere empty file for guidance.
 }

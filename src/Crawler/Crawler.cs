@@ -12,7 +12,9 @@ public class Crawler
     public string initialPage { get; set; }
     public string CurrentPage { get; set; }
 
+
     public int CrawlLimit { get; set; }
+    public int PageCount;
 
     public RobotsTxtManager manager { get; set; }
 
@@ -33,6 +35,7 @@ public class Crawler
         this.Url = url;
         this.CurrentPage = "";
         this.CrawlLimit = limit;
+        this.PageCount = 0;
         this.SameDomainMode = domainmode;
 
         this.CrawlQueue = new Queue<string>();
@@ -59,7 +62,9 @@ public class Crawler
 
         client.Dispose();
 
-        PageSaver.SaveHTMLToFile(this.CurrentPage);
+        PageSaver newpage = new PageSaver();
+        newpage.SaveHTMLToFile(this.CurrentPage, this.PageCount);
+        this.PageCount++;
 
         HashSet<string> LinkList = ExtractLinks(this.CurrentPage);
 
@@ -71,7 +76,6 @@ public class Crawler
 
     }
 
-    //either make same domain crawl method, overloading regular crawl method or add same domain logic to original crawl() with bool in parameters
 
     public async Task CrawlAsync() 
     {

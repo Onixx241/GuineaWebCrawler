@@ -5,11 +5,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class PageSaver 
+public class PageSaver : ISaveResults
 {
-    public static int PageNum = 1;
-
-    public static void SaveHTMLToFile(string page)
+    public void SaveHTMLToFile(string page, int PageNum)
     {
         string dir = "./pagesaves/";
 
@@ -20,10 +18,9 @@ public static class PageSaver
             Sw.Write(page);
         }
 
-        PageNum++;
     }
 
-    public static void WriteSummary(HashSet<string> VisitedLinks) 
+    public void SaveResults(HashSet<string> VisitedLinks) 
     {
         using (StreamWriter Sw = new StreamWriter("Summary.txt")) 
         {
@@ -35,12 +32,12 @@ public static class PageSaver
                 Sw.WriteLine($"--------------------\n{link}\n");
             }
 
-            Sw.WriteLine(File.GetCreationTime("Summary.txt"));
+            Sw.WriteLine($"File Created At {DateTime.Now}");
 
         }
     }
 
-    public static void ClearFolder() 
+    public void ClearFolder() 
     {
         foreach(string filee in Directory.GetFiles("./pagesaves/")) 
         {
