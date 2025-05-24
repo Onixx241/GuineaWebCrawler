@@ -39,9 +39,12 @@ public class PageSaver : ISaveResults
 
     public void ClearFolder() 
     {
-        foreach(string filee in Directory.GetFiles("./pagesaves/")) 
+        if (Directory.Exists("pagesaves"))
         {
-            File.Delete(filee);
+            foreach (string filee in Directory.GetFiles("./pagesaves/"))
+            {
+                File.Delete(filee);
+            }
         }
     }
 

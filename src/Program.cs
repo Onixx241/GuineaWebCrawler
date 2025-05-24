@@ -1,32 +1,27 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 public class Program() 
 {
     //make a reader for a text file and make it a variable and stick it into the crawler constructor
+    //move this to Utils as its own class
 
-    public static string ReadUrl() 
+    public async static Task Main(string[] args) 
     {
-        string url;
-        using (StreamReader sr = new StreamReader("Urlhere.txt")) 
-        {
-            url = sr.ReadToEnd().TrimEnd('/');
-        }
+        CrawlConfig config = new CrawlConfig();
+        ParseArgs.Args(args, config);
 
-        return url;
-    }
 
-    public async static Task Main() 
-    {
         PageSaver newSaver = new PageSaver();
         newSaver.ClearFolder();
 
         Console.WriteLine("Parsing");
-        
+
         //url, crawllimit, samedomainmode
-        Crawler crawl = new Crawler(ReadUrl(), 25, true);
+        Crawler crawl = new Crawler(config.Url, config.CrawlLimit, config.SameDomain);
 
         //parse robots.txt
-        crawl.manager = new RobotsTxtManager(ReadUrl());
+        crawl.manager = new RobotsTxtManager(config.Url);
         await crawl.manager.GrabRobotsAsync();
         crawl.manager.ParseRobots();
 
@@ -45,6 +40,4 @@ public class Program()
     //exclude favicon links and stuff like that 
     //multi link input from urlhere.txt
     //export to database
-    //CLI flags -export as txt or json, -same domain crawl mode -url
-    //add urlhere.txt and URL goes in Urlhere empty file for guidance.
 }
