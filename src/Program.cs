@@ -4,7 +4,6 @@ using System.Security.Cryptography.X509Certificates;
 public class Program() 
 {
     //make a reader for a text file and make it a variable and stick it into the crawler constructor
-    //move this to Utils as its own class
 
     public async static Task Main(string[] args) 
     {
@@ -38,6 +37,6 @@ public class Program()
     //Next:
     //toggle saving html and deleting it for extended crawling and memory saving
     //exclude favicon links and stuff like that 
-    //multi link input from urlhere.txt
+    //multi link input from urlhere.txt <-- Next
     //export to database
 }
