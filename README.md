@@ -27,6 +27,13 @@ This project was created as a **personal learning** journey — to better unders
 ```bash
 dotnet run -url "https://example.com" -limit 25 -dmode truetrue
 ```
+### CLI Flags
+| Flag     | Description                                       | Example                      |
+| -------- | ------------------------------------------------- | ---------------------------- |
+| `-url`   | Seed URL to begin crawling                        | `-url "https://example.com"` |
+| `-limit` | Number of pages to crawl                          | `-limit 25`                  |
+| `-dmode` | Enable same-domain crawling only (`true`/`false`) | `-dmode true`                |
+
 ## 📚 Why "GuineaCS"?
 
 Because guinea pigs are curious explorers — just like this crawler.  
