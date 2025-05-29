@@ -3,8 +3,6 @@ using System.Security.Cryptography.X509Certificates;
 
 public class Program() 
 {
-    //make a reader for a text file and make it a variable and stick it into the crawler constructor
-    //move this to Utils as its own class
 
     public async static Task Main(string[] args) 
     {
