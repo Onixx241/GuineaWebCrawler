@@ -28,6 +28,7 @@ public class Program()
         //add filters
         crawl.Filters.Add(new MailtoFilter());
         crawl.Filters.Add(new HashtagFilter());
+        crawl.Filters.Add(new FaviconFilter());
 
         await crawl.StartCrawler();
 
@@ -37,7 +38,6 @@ public class Program()
 
     //Next:
     //toggle saving html and deleting it for extended crawling and memory saving
-    //exclude favicon links and stuff like that 
     //multi link input from urlhere.txt
     //export to database
 }
