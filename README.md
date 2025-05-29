@@ -27,10 +27,10 @@ This project was created as a **personal learning** journey — to better unders
 ```bash
 dotnet run -url "https://example.com" -limit 25 -dmode truetrue
 ```
-## 📚 Why "Guinea"?
+## 📚 Why "GuineaCS"?
 
 Because guinea pigs are curious explorers — just like this crawler.  
-And it’s written in C# — so I named it , **Guinea**.
+And it’s written in C# — so I named it , **GuineaCS**.
 
 ---
 
