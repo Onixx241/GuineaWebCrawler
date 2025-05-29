@@ -14,50 +14,23 @@ This project was created as a **personal learning** journey — to better unders
 
 ## 🚀 Features
 
-- ✅ Download and parse a single webpage
-- ✅ Extract all `<a href="...">` links using regular expressions
-- ✅ Normalize links (remove trailing slashes)
-- ✅ Convert relative URLs to absolute
-- ✅ Filter out unwanted link types (`mailto:`, `#`, etc.)
-- ✅ Remove duplicates
-- ✅ Save crawled HTML to a local file
-- ✅ Print clean, readable results to console
+- ✅ Crawl the web starting from a seed URL  
+- ✅ Respect `robots.txt` compliance  
+- ✅ Command-line flags for configuration  
+- ✅ Filter links (e.g. `mailto:`, hashtags, domains)(Extensible through ILinkFilter.cs)  
+- ✅ Export results to plain text or JSON  
+- ✅ Save crawled HTML pages locally  
+- (Coming soon): MongoDB / database export
 
----
+## 🧾 Usage
 
-## 🔧 Project Status
-
-## ✅ Milestone: Phase 4 Complete
-
-GuineaCS now has:
-- Multi-page crawling using a breadth-first approach
-- Queue-based link exploration
-- Visited link tracking to avoid loops and repeats
-- Basic link filtering (mailto:, `#`, etc.)
-- Automatic saving of every visited page as numbered HTML files
-- Input validation to skip malformed or unsupported links
-
-You can now give it a single starting URL and it will explore an entire site layer by layer.
-
----
-
-###  Next Milestone: Phase 5 - QOL Updates
-
-| Feature                         | Status       |
-|----------------------------------|--------------|
-| Same-domain restriction          | ✅ Done |
-| Output log (all visited URLs)   | ✅ Done |
-| CLI flags (`--url`, `--max-pages`, etc.) | 🔜 Planned |
-| Crawl depth or page limit       | ✅ Done |
-| Export to `.txt` or `.json`     | ✅ Done (.Json export on the way) |
-
-
----
-
-## 📚 Why "GuineaCS"?
+```bash
+dotnet run -url "https://example.com" -limit 25 -dmode truetrue
+```
+## 📚 Why "Guinea"?
 
 Because guinea pigs are curious explorers — just like this crawler.  
-And it’s written in C# — so I aptly named it , **GuineaCS**.
+And it’s written in C# — so I named it , **Guinea**.
 
 ---
 
@@ -65,11 +38,11 @@ And it’s written in C# — so I aptly named it , **GuineaCS**.
 
 - Practice C# fundamentals
 - Explore real-world software design
-- Build a tool worth sharing and growing
+- Build a tool worth sharing
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Specs
 
 - Language: **C#**
 - Runtime: **.NET 7+**
