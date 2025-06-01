@@ -15,7 +15,7 @@ public class Program()
 
         Console.WriteLine("Parsing");
 
-        //url, crawllimit, samedomainmode -- //config.url, config.crawllimit, config.samedomain
+        //url, crawllimit, samedomainmode
         Crawler crawl = new Crawler(config.Url, config.CrawlLimit, config.SameDomain);
 
         //parse robots.txt
@@ -41,5 +41,5 @@ public class Program()
     //implement builder pattern.    
     //toggle saving html and deleting it for extended crawling and memory saving
     //multi link input from urlhere.txt
-    //export to database <- up now
+    //fix up database <- up now
 }
