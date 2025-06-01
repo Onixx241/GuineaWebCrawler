@@ -15,7 +15,7 @@ public class Program()
 
         Console.WriteLine("Parsing");
 
-        //url, crawllimit, samedomainmode
+        //url, crawllimit, samedomainmode -- //config.url, config.crawllimit, config.samedomain
         Crawler crawl = new Crawler(config.Url, config.CrawlLimit, config.SameDomain);
 
         //parse robots.txt
@@ -31,11 +31,15 @@ public class Program()
         await crawl.StartCrawler();
 
         //write summary
-        newSaver.SaveResults(crawl.VisitedLinks);
+        //newSaver.SaveResults(crawl.VisitedLinks);
+                                                                                           //integrated security bool
+        DatabaseSaver newdb = new DatabaseSaver("Datasource", "User","Password","Catalog", true);
+        newdb.SaveResults(crawl.VisitedLinks);
     }
 
     //Next:
+    //implement builder pattern.    
     //toggle saving html and deleting it for extended crawling and memory saving
     //multi link input from urlhere.txt
-    //export to database
+    //export to database <- up now
 }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 public class ParseArgs 
 {
-    //next args to parse: optional saving html pages and json/DB exporting.
     public static void Args(string[] Allargs, CrawlConfig config) 
     {
         for(int i = 0; i < Allargs.Length; i++) 
