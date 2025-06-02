@@ -33,7 +33,7 @@ public class Program()
         //write summary
         newSaver.SaveResults(crawl.VisitedLinks);
                                                                                            //integrated security bool
-        DatabaseSaver newdb = new DatabaseSaver("Datasource", "User","Password","Catalog", true);
+        DatabaseSaver newdb = new DatabaseSaver("DataSource", "User", "Password","Catalog", true);
         newdb.SaveResults(crawl.VisitedLinks);
     }
 
@@ -41,5 +41,5 @@ public class Program()
     //implement builder pattern.    
     //toggle saving html and deleting it for extended crawling and memory saving
     //multi link input from urlhere.txt
-    //fix up database <- up now
+    //export to database <- up now
 }

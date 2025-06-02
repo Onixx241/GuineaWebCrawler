@@ -51,7 +51,8 @@ public class DatabaseSaver
             using (SqlCommand cmd = new SqlCommand()) 
             {
                 cmd.Connection = sql;
-                cmd.CommandText = "IF OBJECT_ID('Linktablet', 'U') IS NULL " + "CREATE TABLE Linktable(Link VARCHAR(MAX))"; ;
+                //domain | link | time added
+                cmd.CommandText = "IF OBJECT_ID('Linktable', 'U') IS NULL " + "CREATE TABLE Linktable(Domain VARCHAR(150), Link VARCHAR(MAX), DateAdded DATE)"; ;
 
                 cmd.ExecuteNonQuery();
             }
@@ -61,12 +62,15 @@ public class DatabaseSaver
     }
     public void SaveResults(HashSet<string> LinkList) 
     {
-        //this does not work when it has been ran more than one time , how can i check if there is already a similar table . <---- now
+
         CreateTable();
 
         var builder = CreateConnectionString();
 
-        string command = $"INSERT INTO Linktable(Link) VALUES(@Link)";
+        string command = $"INSERT INTO Linktable(Domain, Link, DateAdded) VALUES(@Domain, @Link, @DateAdded)";
+
+        DateTime date = DateTime.Now;
+        string PassableDate = $"{date.Year}-{date.Month}-{date.Day}";
 
         using (SqlConnection sql = new SqlConnection(builder.ConnectionString)) 
         {
@@ -74,12 +78,14 @@ public class DatabaseSaver
             sql.Open();
             foreach (string link in LinkList)
             {
+                Uri uri = new Uri(link);
 
                 using (SqlCommand cmd = new SqlCommand(command, sql))
                 {
 
+                    cmd.Parameters.AddWithValue("@Domain", uri.Host);
                     cmd.Parameters.AddWithValue("@Link", link);
-
+                    cmd.Parameters.AddWithValue("@DateAdded", PassableDate);
                     cmd.ExecuteNonQuery();
 
 
