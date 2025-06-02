@@ -31,7 +31,7 @@ public class Program()
         await crawl.StartCrawler();
 
         //write summary
-        //newSaver.SaveResults(crawl.VisitedLinks);
+        newSaver.SaveResults(crawl.VisitedLinks);
                                                                                            //integrated security bool
         DatabaseSaver newdb = new DatabaseSaver("Datasource", "User","Password","Catalog", true);
         newdb.SaveResults(crawl.VisitedLinks);
