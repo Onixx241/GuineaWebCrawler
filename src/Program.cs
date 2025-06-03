@@ -14,7 +14,6 @@ public class Program()
         {
             parser.CheckForDatabaseInfo();
             parser.ParseFileForDatabase();
-            //find a way to pass this to database saver.
         }
 
         PageSaver newSaver = new PageSaver();
