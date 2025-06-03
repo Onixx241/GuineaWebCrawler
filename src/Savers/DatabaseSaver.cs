@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
-public class DatabaseSaver
+public class DatabaseSaver : ISaveResultsAsync
 {
     //maybe read from a txt file for someone to be able to put their own info in?
     //connect to db, for each link add with value (cmd.params.addwithvalue)
@@ -18,6 +18,7 @@ public class DatabaseSaver
 
     public DatabaseSaver(string source, string user, string pass, string initialcatalog, bool integratedSec) 
     {
+        //maybe add command line / txt file support here? or maybe in main program if cli flags indicate db export.
         this.Datasource = source;
         this.User = user;
         this.Pass = pass;
@@ -60,7 +61,8 @@ public class DatabaseSaver
             sql.Close();
         }
     }
-    public void SaveResults(HashSet<string> LinkList) 
+    //make this async consider batch transaction.
+    public Task SaveResultsAsync(HashSet<string> LinkList) 
     {
 
         CreateTable();
@@ -92,10 +94,9 @@ public class DatabaseSaver
                 }
 
             }
-
-            sql.Close();
-
         }
+
+        return Task.CompletedTask;
     }
 
 }

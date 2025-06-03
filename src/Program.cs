@@ -34,7 +34,7 @@ public class Program()
         newSaver.SaveResults(crawl.VisitedLinks);
                                                                                            //integrated security bool
         DatabaseSaver newdb = new DatabaseSaver("DataSource", "User", "Password","Catalog", true);
-        newdb.SaveResults(crawl.VisitedLinks);
+        newdb.SaveResultsAsync(crawl.VisitedLinks);
     }
 
     //Next:
