@@ -12,6 +12,7 @@ public class ParseArgs
         {
             switch (Allargs[i])
             {
+
                 case "-url":
                      config.Url = Allargs[i + 1];
                 break;
@@ -22,6 +23,14 @@ public class ParseArgs
 
                 case "-dmode":
                     config.SameDomain = Convert.ToBoolean(Allargs[i + 1]);
+                    break;
+
+                case "-json":
+                    config.Mode = SaveMode.Json;
+                    break;
+
+                case "-db":
+                    config.Mode = SaveMode.Database;
                     break;
             }
         }

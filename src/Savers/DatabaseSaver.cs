@@ -18,7 +18,6 @@ public class DatabaseSaver : ISaveResultsAsync
 
     public DatabaseSaver(string source, string user, string pass, string initialcatalog, bool integratedSec) 
     {
-        //maybe add command line / txt file support here? or maybe in main program if cli flags indicate db export.
         this.Datasource = source;
         this.User = user;
         this.Pass = pass;
@@ -61,7 +60,7 @@ public class DatabaseSaver : ISaveResultsAsync
             sql.Close();
         }
     }
-    //make this async consider batch transaction.
+    //consider batch transaction.
     public Task SaveResultsAsync(HashSet<string> LinkList) 
     {
 

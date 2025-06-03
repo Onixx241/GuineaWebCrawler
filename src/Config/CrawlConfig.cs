@@ -10,5 +10,16 @@ public class CrawlConfig
     public int CrawlLimit { get; set; }
     public bool SameDomain { get; set; }
 
+    public SaveMode Mode { get; set; }
+
+
     public CrawlConfig() { }
+}
+
+public enum SaveMode 
+{
+    None,
+    Database,
+    Json,
+    All
 }

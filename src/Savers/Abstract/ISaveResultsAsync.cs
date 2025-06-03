@@ -7,4 +7,5 @@ using System.Threading.Tasks;
 public interface ISaveResultsAsync 
 {
     public Task SaveResultsAsync(HashSet<string> linklist);
+
 }
