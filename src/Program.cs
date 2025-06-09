@@ -16,28 +16,22 @@ public class Program()
             parser.ParseFileForDatabase();
         }
 
-        PageSaver newSaver = new PageSaver();
-        newSaver.ClearFolder();
+        Crawler crawl = new CrawlerBuilder()
+            .SetUrl(config.Url)
+            .SetLimit(config.CrawlLimit)
+            .SetDomainMode(config.SameDomain)
+            .SetSaveMode(config.Mode)
+            .AddFilter(new FaviconFilter())
+            .AddFilter(new HashtagFilter())
+            .AddFilter(new MailtoFilter())
+            .ClearFolder()
+            .BuildCrawler();
 
-        Console.WriteLine("Parsing");
-
-        //url, crawllimit, samedomainmode
-        Crawler crawl = new Crawler(config.Url, config.CrawlLimit, config.SameDomain);
-
-        //parse robots.txt
-        crawl.manager = new RobotsTxtManager(config.Url);
-        await crawl.manager.GrabRobotsAsync();
-        crawl.manager.ParseRobots();
-
-        //add filters
-        crawl.Filters.Add(new MailtoFilter());
-        crawl.Filters.Add(new HashtagFilter());
-        crawl.Filters.Add(new FaviconFilter());
 
         await crawl.StartCrawler();
 
         //write summary
-        newSaver.SaveResults(crawl.VisitedLinks);
+        crawl.supportSaver.SaveResults(crawl.VisitedLinks);
 
         switch (config.Mode) 
         {
@@ -51,12 +45,12 @@ public class Program()
                 JsonSaver newJson = new JsonSaver();
                 newJson.SaveResults(crawl.VisitedLinks);
                 break;
-
         }
 
     }
 
     //Next:
+    //mongodb support
     //add intermediate saving / exporting during program for extended crawl sessions.
     //implement builder pattern.    
     //toggle saving html and deleting it for extended crawling and memory saving
