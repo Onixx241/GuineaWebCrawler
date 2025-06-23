@@ -19,8 +19,9 @@ This project was created as a **personal learning** journey — to better unders
 - ✅ Command-line flags for configuration  
 - ✅ Filter links (e.g. `mailto:`, hashtags, domains)(Extensible through ILinkFilter.cs)  
 - ✅ Export results to plain text or JSON  
+- ✅ Database export
 - ✅ Save crawled HTML pages locally  
-- (Coming soon): MongoDB / database export
+- (Coming Soon) MongoDB export
 
 ## 🧾 Usage
 
