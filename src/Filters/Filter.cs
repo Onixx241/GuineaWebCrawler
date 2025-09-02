@@ -51,7 +51,7 @@ public class Filter
             }
             else 
             {
-                continue;
+                // keep as is
             }
 
             linkpos = linkpos + 1;
