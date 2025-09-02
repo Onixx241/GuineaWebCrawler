@@ -126,10 +126,7 @@ public class Crawler
                 }
 
                 crawlcounter++;
-                //foreach (string link in this.VisitedLinks) 
-                //{
-                //    Console.WriteLine($"Visited Link: {link}");
-                //}
+                
                 //break between downloading last page and new link enqueueing if reached limit.
                 if (crawlcounter == this.CrawlLimit)
                 {
