@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,12 +23,20 @@ public class RobotsTxtManager
     {
         Console.WriteLine("Grabbing Robots.txt");
 
-        //get robots.txt, store it
-        HttpClient get = new HttpClient();
-        var response = await get.GetAsync(new Uri(this.TxtLocation));
-        get.Dispose();
+        try
+        {
+            //get robots.txt, store it
+            HttpClient get = new HttpClient();
+            var response = await get.GetAsync(new Uri(this.TxtLocation));
+            get.Dispose();
 
-        this.Robotstxt = await response.Content.ReadAsStringAsync();
+            this.Robotstxt = await response.Content.ReadAsStringAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error grabbing robots.txt: {ex.Message}");
+            this.Robotstxt = ""; // or handle accordingly
+        }
 
     }
 
@@ -39,27 +48,29 @@ public class RobotsTxtManager
 
         foreach (string line in this.Robotstxt.Split("\n"))
         {
-            string currentline = line;
+            string currentline = line.Trim();
             if (currentline.Contains("Disallow:")) 
             {
-                //decent solution i think 
-                currentline = currentline.Split(" ")[1];
-
-                currentline = currentline.Trim();
-
-                this.Disallowed.Add(currentline);
-
-                Console.WriteLine($"not allowed --> {currentline}");
-
+                string[] parts = currentline.Split(" ");
+                if (parts.Length > 1)
+                {
+                    string path = parts[1].Trim();
+                    this.Disallowed.Add(path);
+                    Console.WriteLine($"not allowed --> {path}");
+                }
             }
 
             if (currentline.Contains("Crawl-delay:"))
             {
-                currentline = currentline.Split(" ")[1];
-
-                this.CrawlDelay = int.Parse(currentline);
-
-                Console.WriteLine($"the delay on the site -> {this.CrawlDelay}");
+                string[] parts = currentline.Split(" ");
+                if (parts.Length > 1)
+                {
+                    if (int.TryParse(parts[1].Trim(), out int delay))
+                    {
+                        this.CrawlDelay = delay;
+                        Console.WriteLine($"the delay on the site -> {this.CrawlDelay}");
+                    }
+                }
             }
             
 

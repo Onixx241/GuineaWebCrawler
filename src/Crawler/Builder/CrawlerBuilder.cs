@@ -5,14 +5,14 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-public class CrawlerBuilder() 
+public class CrawlerBuilder 
 {
     //properties
     public string Url { get; set; }
     public int CrawlLimit { get; set; }
     public bool SameDomain { get; set; }
     public SaveMode Mode { get; set; }
-    public List<ILinkFilter> Filters { get; set; }
+    public List<ILinkFilter> Filters { get; set; } = new List<ILinkFilter>();
 
     public PageSaver newSaver { get; set; } = new PageSaver();
 
@@ -47,11 +47,11 @@ public class CrawlerBuilder()
         clear.ClearFolder();
         return this;
     }
-    public Crawler BuildCrawler() 
+    public async Task<Crawler> BuildCrawlerAsync() 
     {
         Crawler newCrawl = new Crawler(this.Url, this.CrawlLimit, this.SameDomain);
         newCrawl.manager = new RobotsTxtManager(this.Url);
-        newCrawl.manager.GrabRobotsAsync();
+        await newCrawl.manager.GrabRobotsAsync();
         newCrawl.manager.ParseRobots();
 
         foreach(ILinkFilter filter in this.Filters) 
@@ -61,5 +61,4 @@ public class CrawlerBuilder()
 
         return newCrawl;
     }
-
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,30 +50,35 @@ public class ParseDB
     {
         foreach (string line in this.Dbfile.Split("\n")) 
         {
-            string argument = line.Split(" ")[1];
-            //may make the program stop working if there is no value after the hyphen, find a way to fix that.
-            if (argument != null)
+            string[] parts = line.Split(" ");
+            if (parts.Length > 1)
             {
-                if (line.Contains("DataSource-"))
+                string argument = parts[1];
+                if (!string.IsNullOrWhiteSpace(argument))
                 {
-                    this.Datasource = argument;
-                }
-                if (line.Contains("User-"))
-                {
-                    this.User = argument;
-                }
-                if (line.Contains("Password-"))
-                {
-                    this.Password = argument;
-                }
-                if (line.Contains("InitialCatalog-"))
-                {
-                    this.InitialCatalog = argument;
-                }
-                if (line.Contains("IntegratedSecurity-"))
-                {
-                    //if null maybe return false
-                    this.IntegratedSecurity = Convert.ToBoolean(argument);
+                    if (line.Contains("DataSource-"))
+                    {
+                        this.Datasource = argument;
+                    }
+                    if (line.Contains("User-"))
+                    {
+                        this.User = argument;
+                    }
+                    if (line.Contains("Password-"))
+                    {
+                        this.Password = argument;
+                    }
+                    if (line.Contains("InitialCatalog-"))
+                    {
+                        this.InitialCatalog = argument;
+                    }
+                    if (line.Contains("IntegratedSecurity-"))
+                    {
+                        if (bool.TryParse(argument, out bool integrated))
+                        {
+                            this.IntegratedSecurity = integrated;
+                        }
+                    }
                 }
             }
         }

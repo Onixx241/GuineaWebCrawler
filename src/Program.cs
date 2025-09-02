@@ -1,7 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
-public class Program() 
+public class Program 
 {
 
     public async static Task Main(string[] args) 
@@ -16,7 +17,7 @@ public class Program()
             parser.ParseFileForDatabase();
         }
 
-        Crawler crawl = new CrawlerBuilder()
+        Crawler crawl = await new CrawlerBuilder()
             .SetUrl(config.Url)
             .SetLimit(config.CrawlLimit)
             .SetDomainMode(config.SameDomain)
@@ -25,7 +26,7 @@ public class Program()
             .AddFilter(new HashtagFilter())
             .AddFilter(new MailtoFilter())
             .ClearFolder()
-            .BuildCrawler();
+            .BuildCrawlerAsync();
 
 
         await crawl.StartCrawler();

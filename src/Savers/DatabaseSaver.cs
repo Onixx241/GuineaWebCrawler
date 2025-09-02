@@ -60,8 +60,8 @@ public class DatabaseSaver : ISaveResultsAsync
             sql.Close();
         }
     }
-    //consider batch transaction.
-    public Task SaveResultsAsync(HashSet<string> LinkList) 
+        //consider batch transaction.
+    public async Task SaveResultsAsync(HashSet<string> LinkList) 
     {
 
         CreateTable();
@@ -79,23 +79,26 @@ public class DatabaseSaver : ISaveResultsAsync
             sql.Open();
             foreach (string link in LinkList)
             {
-                Uri uri = new Uri(link);
-
-                using (SqlCommand cmd = new SqlCommand(command, sql))
+                try
                 {
+                    Uri uri = new Uri(link);
+                    string domain = uri.Host;
 
-                    cmd.Parameters.AddWithValue("@Domain", uri.Host);
-                    cmd.Parameters.AddWithValue("@Link", link);
-                    cmd.Parameters.AddWithValue("@DateAdded", PassableDate);
-                    cmd.ExecuteNonQuery();
+                    using (SqlCommand cmd = new SqlCommand(command, sql))
+                    {
 
-
+                        cmd.Parameters.AddWithValue("@Domain", domain);
+                        cmd.Parameters.AddWithValue("@Link", link);
+                        cmd.Parameters.AddWithValue("@DateAdded", PassableDate);
+                        await cmd.ExecuteNonQueryAsync();
+                    }
                 }
-
+                catch (UriFormatException ex)
+                {
+                    Console.WriteLine($"Invalid URL: {link}, skipping. Error: {ex.Message}");
+                }
             }
         }
-
-        return Task.CompletedTask;
     }
 
 }

@@ -1,6 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Transactions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.IO;
+using System;
 
 public class Crawler
 {
@@ -30,6 +35,8 @@ public class Crawler
 
     public List<ILinkFilter> Filters = new List<ILinkFilter>();
 
+    public PageSaver supportSaver { get; set; } = new PageSaver();
+
     public Crawler(string url, int limit, bool domainmode)
     {
         this.Url = url;
@@ -49,7 +56,7 @@ public class Crawler
             return new List<string>();
         if (!Uri.IsWellFormedUriString(todownload, UriKind.Absolute)) 
             return new List<string>();
-        if(!todownload.StartsWith("Http", StringComparison.OrdinalIgnoreCase)) 
+        if(!todownload.StartsWith("http", StringComparison.OrdinalIgnoreCase)) 
             return new List<string>();
 
         Console.WriteLine("Crawling Page!");
@@ -99,7 +106,7 @@ public class Crawler
             //pop out url from front of queue and check if its in visited links.
             string currenturl = CrawlQueue.Dequeue();
 
-            if (this.VisitedLinks.Contains(currenturl) != true && this.manager.Disallowed.Contains(currenturl) != true) 
+            if (this.VisitedLinks.Contains(currenturl) != true && !IsDisallowed(currenturl)) 
             {
                 // link in front of queue -> add to visited links AND run downloadpage and get new links.
                 //possible issue(not really an issue): absoluting links
@@ -119,10 +126,10 @@ public class Crawler
                 }
 
                 crawlcounter++;
-                foreach (string link in this.VisitedLinks) 
-                {
-                    Console.WriteLine($"Visited Link: {link}");
-                }
+                //foreach (string link in this.VisitedLinks) 
+                //{
+                //    Console.WriteLine($"Visited Link: {link}");
+                //}
                 //break between downloading last page and new link enqueueing if reached limit.
                 if (crawlcounter == this.CrawlLimit)
                 {
@@ -166,12 +173,25 @@ public class Crawler
 
     }
 
-    public void PrintLinks(HashSet<string> linklist)
+    private bool IsDisallowed(string url)
     {
-        foreach(string list in linklist)
+        try
         {
-            Console.WriteLine($"------------------------\n{list}");
+            Uri uri = new Uri(url);
+            string path = uri.PathAndQuery;
+            foreach (string disallowed in this.manager.Disallowed)
+            {
+                if (path.StartsWith(disallowed))
+                {
+                    return true;
+                }
+            }
         }
+        catch
+        {
+            // invalid url, consider allowed or handle
+        }
+        return false;
     }
 
     private bool PassesAllFilters(string link) 
